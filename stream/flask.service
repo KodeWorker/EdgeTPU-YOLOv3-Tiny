@@ -1,0 +1,16 @@
+[Unit]
+Description=Flask web server
+After=network.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+User=mendel
+PermissionStartOnly=true
+WorkingDirectory=/home/mendel/tflite_conversion/
+ExecStart=/bin/bash run_stream_server.sh
+TimeoutSec=600
+Restart=always
+RuntimeDirectoryMode=755

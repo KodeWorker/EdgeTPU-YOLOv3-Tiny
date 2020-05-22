@@ -1,0 +1,10 @@
+FROM edgetpu/host
+
+COPY /Dockerfile/pen_demo.cfg /models/
+COPY /Dockerfile/pen_demo.names /models/
+COPY /Dockerfile/pen_demo.weights /models/
+
+RUN python /tflite_conversion/YOLOConvert/convert_weights_pb.py --class_names /models/pen_demo.names --data_format NHWC --weights_file /models/pen_demo.weights --output_graph /models/pen_demo.pb --tiny --model_config /models/pen_demo.cfg
+RUN python /tflite_conversion/generate_model_params.py -i /models/pen_demo.cfg -l /models/pen_demo.names -o /models/
+RUN python /tflite_conversion/convert_frozen_model_to_tflite.py -m /models/pen_demo.pb -o /models/pen_demo.tflite --params /models/pen_demo.json
+RUN edgetpu_compiler -s -o /models /models/pen_demo.tflite

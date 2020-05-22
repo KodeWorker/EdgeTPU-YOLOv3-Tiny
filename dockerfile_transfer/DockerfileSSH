@@ -1,0 +1,6 @@
+FROM transfer/base
+
+ADD pen.json /params/
+ADD pen.labels /labels/
+ADD pen_demo.tflite /models/
+RUN cd /models && edgetpu_compiler -s pen_demo.tflite
