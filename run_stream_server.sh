@@ -10,7 +10,6 @@ IOT_THRESHOLD=0.5
 
 python3 stream/main.py \
 --host $HOST --port $PORT \
-#-i $INPUT \
 -c $CAMERA_ID \
 -m $MODEL -l $LABEL --params $PARAMS \
 -pt $PROB_THRESHOLD -iout $IOT_THRESHOLD

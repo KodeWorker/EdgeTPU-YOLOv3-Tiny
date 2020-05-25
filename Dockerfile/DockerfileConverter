@@ -1,0 +1,5 @@
+FROM tensorflow/tensorflow:1.11.0-py3
+
+# Fixed code
+RUN mkdir /tflite_conversion
+COPY YOLOConvert/ /tflite_conversion/YOLOConvert/

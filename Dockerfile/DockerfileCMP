@@ -1,0 +1,9 @@
+FROM edgetpu/compile
+
+COPY /Dockerfile/pen_demo.cfg /models/
+COPY /Dockerfile/pen_demo.names /models/
+COPY /Dockerfile/pen_demo.pb /models/
+
+RUN python /tflite_conversion/generate_model_params.py -i /models/pen_demo.cfg -l /models/pen_demo.names -o /models
+RUN python /tflite_conversion/convert_frozen_model_to_tflite.py -m /models/pen_demo.pb -o /models/pen_demo.tflite --params /models/pen_demo.json
+RUN edgetpu_compiler -s /models/pen_demo.tflite -o /models

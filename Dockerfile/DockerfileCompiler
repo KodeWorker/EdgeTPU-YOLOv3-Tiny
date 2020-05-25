@@ -1,28 +1,24 @@
-FROM ubuntu:18.04
+FROM tensorflow/tensorflow:2.2.0
 
-MAINTAINER kelvinwu
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update -y && apt-get install -y apt-utils
-RUN apt-get install curl -y
-RUN apt-get install -y gnupg2
+RUN apt-get update -y && apt-get install apt-transport-https -y
 
 RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 RUN echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | tee /etc/apt/sources.list.d/coral-edgetpu.list
-
 RUN apt-get update -y
 RUN apt-get install edgetpu-compiler -y
+RUN apt-get install git -y
 RUN apt-get install openssh-client -y
+RUN apt-get install -y libsm6 libxext6 libxrender-dev
+RUN pip install opencv-python
 
-ADD id_rsa /key/
+COPY /Dockerfile/id_rsa /key/
 RUN chmod 600 /key/id_rsa
 # Host key verification failed.
 RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN echo "UserKnownHostsFile /dev/null" >> /etc/ssh/ssh_config
 
-#ADD pen.json /params/
-#ADD pen.labels /labels/
-#ADD pen_demo.tflite /models/
-#RUN cd /models && edgetpu_compiler -s pen_demo.tflite
-
-
+# Fixed code
+RUN mkdir /tflite_conversion
+COPY generate_model_params.py /tflite_conversion/
+COPY convert_frozen_model_to_tflite.py /tflite_conversion/
+COPY tflite_utils.py /tflite_conversion/
