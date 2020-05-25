@@ -9,12 +9,14 @@ The inference results would shown on the website (http://\[EdgeTPU-IP\]:5000/).
 2. Build OpenCV
 3. Setup Flask and Startup service (systemd)
 4. Generate public/private key pairs for SSH
+
 **note:** you should have model/labels/params files for runing this web service.
 
 - Secondely, we run the run_deploy_model.bat \[EdgeTPU-IP\] \[--skip\].
 Before running this batch, we should have 4 files in Dockerfile/: private key, model.cfg, model.weights, and labels.names.
 This batch file will build and convert YOLOv3-Tiny model to desired files for EdgeTPU.
 The desired files (model/labels/params) would be generated in Dockerfile/.
+
 **note:** you have to build YOLOv3-Tiny model using relu rather leaky-relu, because only relu activation funtion is supported for edgetpu_compiler.
 
 ## References
