@@ -3,7 +3,7 @@ outputs/
 inputs/
 labels/
 models/
-/dockerfile_transfer/id_rsa
+Dockerfile/id_rsa
 *.pyd
 *.pyc
 *.png
