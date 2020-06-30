@@ -79,7 +79,7 @@ def load_coco_names(file_name):
             names[id] = name
     return names
 
-def draw_boxes(boxes, img, cls_names, size, colors, is_letter_box_image):
+def draw_boxes(boxes, img, cls_names, size, colors, is_letter_box_image, is_class_name_only=True):
     iw, ih = img.shape[0:2][::-1]
     w, h = size
     w_scale, h_scale = iw/w, ih/h
@@ -88,7 +88,11 @@ def draw_boxes(boxes, img, cls_names, size, colors, is_letter_box_image):
         for box, score_ in bboxs:
             x1, y1, x2, y2 = box
             cv2.rectangle(img, (int(x1*h_scale), int(y1*w_scale)), (int(x2*h_scale), int(y2*w_scale)), color, 2)
-            cv2.putText(img, "{} {:.2f}%".format(cls_names[cls], score_ * 100),
+            if is_class_name_only:
+                cv2.putText(img, "{}".format(cls_names[cls]),
+                        (int(x1*h_scale), int(y1*h_scale)), cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1, cv2.LINE_AA)
+            else:
+                cv2.putText(img, "{} {:.2f}%".format(cls_names[cls], score_ * 100),
                         (int(x1*h_scale), int(y1*h_scale)), cv2.FONT_HERSHEY_DUPLEX, 0.5, color, 1, cv2.LINE_AA)
 
 def letter_box_image(image, size, fill=128):
